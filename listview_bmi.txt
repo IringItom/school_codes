@@ -1,0 +1,89 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace listview
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+
+            //List View Properties
+            listView1.View = View.Details;
+            listView1.FullRowSelect = true;
+
+            //add columns in list view
+            listView1.Columns.Add("Name", 100);
+            listView1.Columns.Add("Height", 100);
+            listView1.Columns.Add("Weight", 100);
+            listView1.Columns.Add("BMI", 100);
+        }
+        //instantiation
+        bmi person = new bmi();
+
+        //pass value in class
+        private void newbmi()
+        {
+            person.getName = txtName.Text;
+            person.setFeet = double.Parse(txtFeet.Text);
+            person.setInches = double.Parse(txtInches.Text);
+            person.setWeight = double.Parse(txtWeight.Text);
+        }
+        
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            //add value to list view
+            newbmi();
+
+            //add value to columns
+            string[] row = { person.getName, person.setHeight().ToString(), person.setWeight.ToString(), person.ansBMI().ToString() };
+
+            ListViewItem items = new ListViewItem(row);
+            listView1.Items.Add(items);
+
+            //ListViewItem items = new ListViewItem(listView1.Items);
+            //items.SubItems.Add(txtName.Text);
+            //items.SubItems.Add(txtFeet.Text);
+            //items.SubItems.Add(txtWeight.Text);
+
+            txtName.Text = "";
+            txtFeet.Text = "";
+            txtInches.Text = "";
+            txtWeight.Text = "";
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            //update value to class
+            newbmi();
+            
+            listView1.SelectedItems[0].SubItems[0].Text = person.getName;
+            listView1.SelectedItems[0].SubItems[1].Text = person.setHeight().ToString();
+            listView1.SelectedItems[0].SubItems[2].Text = person.getWeight().ToString();
+            listView1.SelectedItems[0].SubItems[3].Text = person.ansBMI().ToString();
+        }
+
+ 
+
+        private void listView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            txtName.Text = listView1.SelectedItems[0].SubItems[0].Text;
+            txtFeet.Text = listView1.SelectedItems[0].SubItems[1].Text;
+            txtWeight.Text = listView1.SelectedItems[0].SubItems[2].Text;
+            
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            listView1.Items.RemoveAt(listView1.SelectedIndices[0]);
+        }
+    }
+}
